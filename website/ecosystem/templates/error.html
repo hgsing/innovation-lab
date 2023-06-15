@@ -1,17 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="home-title-background">
+    <div class="home-title-background error-background">
         <span class="home-title">
             <span class="home-text">
                 Error: {{ error }}
             </span>
         </span>
     </div>
-
-    <style>
-        .home-title-background {
-            height: calc(100dvh - 6rem);
-        }
-    </style>
 {% endblock %}

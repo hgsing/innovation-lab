@@ -110,6 +110,10 @@ button {
   border-bottom: 2px solid var(--line-color);
 }
 
+.error-background {
+  height: calc(100dvh - 6rem);
+}
+
 .home-title {
   color: white;
   font-size: 48px;
