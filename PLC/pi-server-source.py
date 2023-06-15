@@ -8,7 +8,9 @@ from pycomm3.logix_driver import ReadWriteReturnType
 
 # Author: Aaron Rahman <cyber@umich.edu>
 # Date: Summer 2022
-# Updated: Hayden Singleton <hsinglet@gmu.edu>, Spring 2023
+#
+# Updated: Hayden Singleton <hsinglet@gmu.edu>
+# Date: Spring 2023
 
 # commands
 # tag
