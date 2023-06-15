@@ -11,14 +11,14 @@
                 "command": "python pi-server-source.py"
             },
             "options": {
-                "cwd": "${workspaceFolder}/SkillBossLogistics"
+                "cwd": "${workspaceFolder}/PLC"
             },
             "problemMatcher": []
         },
         {
             "label": "Start website",
             "type": "shell",
-            "command": "py manage.py runserver",
+            "command": "python manage.py runserver",
             "options": {
                 "cwd": "${workspaceFolder}/website"
             },
@@ -27,7 +27,7 @@
         {
             "label": "Run together",
             "type": "shell",
-            "command": "dir website",
+            "command": "cd website",
             "group": {
                 "kind": "build"
             },
