@@ -64,31 +64,36 @@ class InformationProvider:
         """logs a header row to the CSV file storing the data for this device over time"""
         writer = csv.writer(
             open(
-                os.path.join("csv", self.name + ".csv"),
+                os.path.join("ecosystem", "logs", self.id + ".csv"),
                 "a",
                 newline="",
                 encoding="utf-8",
             )
         )
+
         if not self.active_connection:
             writer.writerow(["Err no connection"])
             return
+
         row = ["Date"]
         for datapoint_key in self.data:
             row.append(datapoint_key)
+
         writer.writerow(row)
 
     def log_row(self):
         """logs a data row to the CSV file storing the data for this device over time"""
         if not self.active_connection:
             return
+
         now = datetime.now().strftime("%H:%M:%S %f")
         row = [now]
-        for _, datapoint in self.data:
+
+        for datapoint in self.data.values():
             row.append(datapoint["value"])
         writer = csv.writer(
             open(
-                os.path.join("csv", self.name + ".csv"),
+                os.path.join("ecosystem", "logs", self.id + ".csv"),
                 "a",
                 newline="",
                 encoding="utf-8",
@@ -337,10 +342,150 @@ class RaspberryPiRelayInformationProvider(InformationProvider):
         self.active_connection = False
         self.plc_online = False
 
-    def send(self, command: str):
+    commands: dict[str, list[str]] = {
+        "system_start": ["SystemStartPB 1 SystemStopPB 0 System_Pause 0"],
+        "system_stop": ["SystemStartPB 0 SystemStopPB 1 System_Pause 0"],
+        "system_pause": ["SystemStartPB 0 SystemStopPB 0 System_Pause 1"],
+        "cycle_stop": ["CycleStopPB 1"],
+        "master_speed": ["MasterSpdSetting"],
+        "induction_roller_on": [
+            "InductionRoller1_ManRunPB 1",
+            "InductionRoller1_ManStopPB 0",
+        ],
+        "induction_roller_off": [
+            "InductionRoller1_ManRunPB 0",
+            "InductionRoller1_ManStopPB 1",
+            "InductionRoller1_Jog 0",
+        ],
+        "induction_roller_jog": [
+            "InductionRoller1_ManRunPB 0",
+            "InductionRoller1_Jog 1",
+            "InductionRoller1_ManStopPB 0",
+        ],
+        "induction_roller_speed": ["InductionRollerSpdOffset"],
+        "induction_conveyor_on": [
+            "InductionConveyor_ManRunPB 1",
+            "InductionConveyor_ManStopPB 0",
+        ],
+        "induction_conveyor_off": [
+            "InductionConveyor_ManRunPB 0",
+            "InductionConveyor_ManStopPB 1",
+            "InductionConveyor_FwdJog 0",
+        ],
+        "induction_conveyor_jog": [
+            "InductionConveyor_ManStopPB 0",
+            "InductionConveyor_FwdJog 1",
+        ],
+        "induction_conveyor_speed": ["InductionConveyorSpdOffset"],
+        "vertical_conveyor_on": [
+            "VerticalSorterConveyor_ManRunPB 1",
+            "VerticalSorterConv_ManStopPB 0",
+        ],
+        "vertical_conveyor_off": [
+            "VerticalSorterConveyor_ManRunPB 0",
+            "VerticalSorterConv_ManStopPB 1",
+            "VerticalSorterConveyor_Jog 0",
+        ],
+        "vertical_conveyor_jog": [
+            "VerticalSorterConv_ManStopPB 0",
+            "VerticalSorterConveyor_Jog 1",
+        ],
+        "vertical_conveyor_raise": [
+            "VerticalSorterConveyor_ManRunPB 0",
+            "VerticalSorterConv_ManStopPB 1",
+            "VerticalSorterConveyor_Jog 0",
+            "VerticalSorterConveyor_RaisePB 1",
+            "VerticalSorterConv_LowerPB 0",
+        ],
+        "vertical_conveyor_lower": [
+            "VerticalSorterConveyor_ManRunPB 0",
+            "VerticalSorterConv_ManStopPB 1",
+            "VerticalSorterConveyor_Jog 0",
+            "VerticalSorterConveyor_RaisePB 0",
+            "VerticalSorterConv_LowerPB 1",
+        ],
+        "rework_conveyor_on": ["ReworkConveyor_ManStopPB 0", "ReworkConveyor_ManRunPB 1"],
+        "rework_conveyor_off": [
+            "ReworkConveyor_ManRunPB 0",
+            "ReworkConveyor_ManStopPB 1",
+            "ReworkConveyor_Jog 0",
+        ],
+        "rework_conveyor_jog": [
+            "ReworkConveyor_ManStopPB 0",
+            "ReworkConveyor_Jog 1",
+        ],
+        "distribution_conveyor_on": [
+            "DistributionConv_ManRunPB 1",
+            "DistributionConv_ManStopPB 0",
+            "DistributionConveyor_RevJog 0",
+            "DistributionConveyor_FwdJog 0",
+        ],
+        "distribution_conveyor_off": [
+            "DistributionConv_ManRunPB 0",
+            "DistributionConv_ManStopPB 1",
+            "DistributionConveyor_RevJog 0",
+            "DistributionConveyor_FwdJog 0",
+        ],
+        "distribution_conveyor_fjog": [
+            "DistributionConv_ManRunPB 0",
+            "DistributionConv_ManStopPB 0",
+            "DistributionConveyor_FwdJog 1",
+            "DistributionConveyor_RevJog 0",
+        ],
+        "distribution_conveyor_rjog": [
+            "DistributionConv_ManRunPB 0",
+            "DistributionConv_ManStopPB 0",
+            "DistributionConveyor_FwdJog 0",
+            "DistributionConveyor_RevJog 1",
+        ],
+        "distribution_conveyor_speed": ["DistributionConveyorSetSpeedFPM"],
+        "diverter_1_on": [
+            "Sorter1_DivertToTray 1",
+            "Sorter1_DivertToTrayPB 1",
+        ],
+        "diverter_1_off": [
+            "Sorter1_DivertToTray 0",
+            "Sorter1_DivertToTrayPB 0",
+        ],
+        "diverter_2_on": [
+            "Sorter2_DivertToTray 1",
+            "Sorter2_DivertToTrayPB 1",
+        ],
+        "diverter_2_off": [
+            "Sorter2_DivertToTray 0",
+            "Sorter2_DivertToTrayPB 0",
+        ],
+        "diverter_3_raise": ["PickandPlace_RaisePB 1", "PickandPlace_LowerPB 0"],
+        "diverter_3_lower": ["PickandPlace_LowerPB 1", "PickandPlace_RaisePB 0"],
+        "diverter_3_extend": [
+            "PickandPlace_MoveToTrayPB 1",
+            "PickandPlace_MoveToConveyorPB 0",
+        ],
+        "diverter_3_retract": [
+            "PickandPlace_MoveToConveyorPB 1",
+            "PickandPlace_MoveToTrayPB 0",
+        ],
+        "diverter_3_off": ["PickandPlace_ManualVacuum 0"],
+        "diverter_3_on": ["PickandPlace_ManualVacuum 1"],
+    }
+
+    def send_command(self, cmd: str, value: str = None):
+        msg = "tag write "
+
+        if cmd in self.commands:
+            msg += " ".join(self.commands[cmd])
+        else:
+            msg += cmd
+
+        if value:
+            msg += value
+
+        return self.send(msg)
+
+    def send(self, msg: str):
         if self.active_connection:
             try:
-                self.client.sendall(command.encode("utf-8"))
+                self.client.sendall(msg.encode("utf-8"))
 
                 length = int(self.client.recv(8).decode("utf-8"))
                 response = self.client.recv(length).decode("utf-8")
@@ -460,4 +605,5 @@ def create_device(d, cfg) -> InformationProvider:
         case "occupancy":
             return OccupancyInformationProvider(name, _id, ip, port)
         case _:
-            raise AttributeError("Invalid device type " + device_type + " in config")
+            raise AttributeError("Invalid device type " +
+                                 device_type + " in config")

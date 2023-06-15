@@ -6,7 +6,7 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('devices/<device_id>', views.device_data_display, name='device-data-display'),
+    path('devices/<device_id>', views.device_data, name='device_data'),
     path('get_tags', csrf_exempt(views.get_tags), name='get-tags'),
     path('tables/<device_id>', views.table, name='table'),
     path('raw/<device_id>',views.raw, name='raw'),
@@ -18,6 +18,5 @@ urlpatterns = [
     path('command/<cmd>/<value>', csrf_exempt(views.send_command), name='send-command'),
     path('view_faults', views.view_faults, name='view-faults'),
     path('save_faults', csrf_exempt(views.save_faults), name='save-faults'),
-    path("robots.txt", views.plain_text, name='robots'),
     path("humans.txt", TemplateView.as_view(template_name="humans.txt", content_type="text/plain")),
 ]
