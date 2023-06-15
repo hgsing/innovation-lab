@@ -1,0 +1,175 @@
+.model {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: var(--bg-color);
+  color: var(--primary-color);
+  margin: 0 1rem 1rem 1rem;
+}
+
+.model-title {
+  font-size: 50px;
+  font-weight: 500;
+  word-spacing: 10%;
+  padding: 0.5rem;
+  align-self: center;
+}
+
+.fault-button {
+  position: absolute;
+  left: 0;
+  margin: 1rem;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  border: transparent;
+  background: lightgrey;
+  outline: 2px solid grey;
+  color: black;
+}
+
+.fault-button:hover {
+  box-shadow: 0 10px 15px 0 rgba(0, 0, 0, 0.2);
+}
+
+#updated {
+  position: absolute;
+  right: 1rem;
+  margin-top: 1rem;
+  border-radius: 0.25rem;
+  align-self: flex-end;
+  outline: transparent;
+  transition: outline 2s ease-in 0.5s;
+}
+
+#updated.warning {
+  color: #111;
+  padding: 1rem;
+  outline: 2px solid var(--color-danger);
+  background-color: var(--color-warning);
+}
+
+.model-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+#InductionRoller,
+#InductionConveyor,
+#VerticalSorterConveyor,
+#RecirculationConveyor,
+#DistributionConveyor,
+#PickAndPlace,
+#Diverter1,
+#Diverter2 {
+  cursor: pointer;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  padding: 0 1rem 0 0;
+  margin-left: auto;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.controls > div:first-child {
+  margin-bottom: 0.75rem;
+}
+
+
+.controls > div:nth-child(n + 2) {
+  display: none;
+}
+
+.controls > div.active {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.controls button {
+  width: 160px;
+  height: 100px;
+  min-width: 100px;
+
+  font-size: 20px;
+  font-weight: bolder;
+  color: white;
+  border: 0;
+  outline: 1px solid var(--line-color);
+}
+
+.green {
+  background-color: var(--color-green);
+}
+
+.lime {
+  background-color: var(--color-lime-green);
+}
+
+.red {
+  background-color: var(--color-red);
+}
+
+.yellow {
+  background-color: var(--color-yellow);
+}
+
+.blue {
+  background-color: var(--color-blue);
+}
+
+.dark-blue {
+  background-color: var(--color-dark-blue);
+}
+
+.dark-green {
+  background-color: var(--color-dark-green);
+}
+
+.dark-green:active {
+  filter: brightness(75%);
+}
+
+.gray {
+  background-color: var(--color-gray);
+}
+
+.wip {
+  cursor: not-allowed;
+  filter: none;
+}
+
+.modal > #speedModal {
+  display: grid;
+  place-items: center;
+
+  width: min-content;
+  height: min-content;
+  padding: 1rem;
+}
+
+#speedModal > form {
+  display: block;
+  padding-block: 1rem;
+  padding: 1rem;
+}
+
+#speedModal > form > div:nth-child(4) {
+  display: flex;
+  flex-direction: row;
+  width: max-content;
+  flex: space-between;
+}
+
+#speedModal > form > div > button {
+  padding: 0.1rem;
+  margin: 0.5rem;
+  margin-top: 0.5rem;
+  align-self: center;
+}
