@@ -1,0 +1,258 @@
+{% extends 'base.html' %}
+
+{% load table_utils %}
+
+{% block content %}
+
+<div class="home-title-background">
+    <span class="home-title">
+        <span class="home-text">{{ device.name }}</span>
+    </span>
+</div>
+
+<div class="table-info">
+    <input type="text" id="search-bar" placeholder="Search for tags">
+    <p id="updated">Last Updated:</p>
+</div>
+
+{% if device.name == 'Skill Boss Logistics' %}
+
+<table id="machine-status-table">
+    <colgroup>
+        <col class="row-name">
+        <col class="row-content" span="5">
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Key</th>
+            {% for heading_key, heading_value in headers.items %}
+            <th>{{ heading_value }}</th>
+            {% endfor %}
+            <th>Previous</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for datapoint_name, datapoint_value in data.items %}
+        <tr onclick="showFull(this)">
+            <td>{{ datapoint_name }}</td>
+            {% for header in headers %}
+            <td data-full="{{ datapoint_value|get_full:header }}">
+                {{ datapoint_value|get_item:header }}
+            </td>
+            {% endfor %}
+            <td></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% else %}
+
+<div class="embed-table">
+    {% include 'table.html' %}
+</div>
+
+{% endif %}
+
+<script>
+    // Wait for content to load
+    const initial_load = Date.now()
+    console.log("initial load:", formatTime(initial_load))
+    const table = document.getElementById("machine-status-table")
+    document.getElementById("updated").innerHTML = `Last updated: ` + formatTime(initial_load);
+    
+    for (let i = 1, row; row = table.rows[i]; i++) {
+        row.cells[5].innerHTML = "";
+    }
+
+    $(document).ready(function () {
+        $('#search-bar').on('click', function () {
+            this.value = ''
+        });
+        $('#search-bar').on('keyup', function () {
+            sort(this)
+        });
+    });
+
+    const today = new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+    }).format(Date.now())
+
+    $(document).ready(() => setInterval(() => {
+        $.ajax({ url: "../get_tags", method: 'POST' })
+            .done((resp) => {
+
+                if (resp.connection) {
+                    const data = resp.data
+                    const time = new Date()
+                    document.getElementById("updated").innerHTML = `Last updated: ` + formatTime(time);
+
+                    for (let i = 1, row; row = table.rows[i]; i++) {
+                        const valueCell = row.cells[4]
+                        const previousValue = row.cells[5]
+
+                        let oldValue = valueCell.dataset["full"].trim()
+                        let newValue = data[Object.keys(data)[i - 1]]['value'].trim()
+
+                        valueCell.dataset["full"] = newValue
+
+                        if (newValue !== oldValue) {
+                            previousValue.innerHTML = oldValue
+                            valueCell.innerHTML = newValue
+
+                            row.style.backgroundColor = "#bbddee";
+
+                            const duration_ms = 1000 * 5;
+                            const effect = new KeyframeEffect(
+                                row,
+                                [
+                                    { backgroundColor: "var(--color-yellow)" },
+                                    { backgroundColor: "var(--table-bg)" }
+                                ],
+                                { duration: duration_ms, easing: "linear" }
+                            );
+                            const animation = new Animation(effect, document.timeline);
+                            animation.play();
+                        }
+                    }
+
+                    sort($('#search-bar'));
+                }
+            })
+    }, 250)
+    );
+
+    function sort(element) {
+        const searchTerm = $(element).val().toLowerCase();
+        $('table tbody tr').each(function () {
+            const lineStr = $(this).text().toLowerCase();
+            if (lineStr.indexOf(searchTerm) === -1) {
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
+        });
+    }
+
+    function showFull(row) {
+        console.log(row)
+        for (let i = 1; i < row.children.length - 1; i++) {
+            const cell = row.children[i];
+
+            if (cell.dataset['short']) {
+                cell.innerHTML = cell.dataset['short']
+                cell.removeAttribute("data-short")
+            }
+            else {
+                cell.dataset['short'] = cell.innerHTML
+                cell.innerHTML = cell.dataset['full']
+            }
+        }
+    }
+
+    function formatTime(date) {
+        options = {
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+        };
+        return new Intl.DateTimeFormat("en-US", options).format(date);
+    }
+
+</script>
+
+<style>
+    .table-info {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        width: calc(100% - 2rem);
+        margin-top: 1rem;
+    }
+
+    #search-bar {
+        color: #222;
+        font-size: 1rem;
+        border: 0;
+        height: 100%;
+        width: 50%;
+        border-radius: 0.5rem;
+        padding: 1rem 0.5rem;
+        appearance: none;
+    }
+
+    #search-bar:focus {
+        border: 0;
+        outline: 2px solid black;
+    }
+
+    table {
+        text-align: center;
+        width: calc(100% - 2rem);
+        border-collapse: separate;
+        margin: 1rem 0rem;
+        border-spacing: 0 5px;
+        overflow: scroll;
+        color: #111;
+        --table-hover: #cce1f9;
+        --table-bg: #ddebfb;
+        --table-border: ;
+        --table-head: #c5c8ea;
+    }
+
+    td {
+        padding: 8px;
+        text-align: center;
+    }
+
+    tr:hover {
+        background-color: var(--table-hover);
+    }
+
+    tr {
+        background-color: var(--table-bg);
+        overflow: hidden;
+        border-collapse: separate;
+    }
+
+    th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        background-color: var(--table-head);
+        font-weight: normal;
+    }
+
+    .embed-table {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        margin-bottom: 30px;
+    }
+
+    tr td:first-child,
+    tr th:first-child {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        -webkit-border-top-left-radius: 5px;
+        -webkit-border-bottom-left-radius: 5px;
+    }
+
+    tr td:last-child,
+    tr th:last-child {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+        -webkit-border-bottom-right-radius: 5px;
+    }
+
+    #updated {
+        position: absolute;
+        right: 2rem;
+        margin-top: 1rem;
+        padding: 0;
+    }
+</style>
+
+{% endblock %}

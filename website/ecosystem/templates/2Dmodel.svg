@@ -1,0 +1,104 @@
+<svg id="2Dmodel" width="1000" height="750" viewBox="0 0 1000 750" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#2Dmodelb)">
+        <g id="InductionConveyor">
+            <path class="belt" d="M130 625H830V725H130V625Z" fill="#008080" stroke="black" />
+            <path d="M690.833 688.51H755V662.529H690.833V688.51Z" fill="#2F2FE6" />
+            <path d="M645 675L695 705V645L645 675ZM755 669.804H690V680.196H755V669.804Z" fill="#2F2FE6" />
+            <path d="M345.833 688.51H410V662.529H345.833V688.51Z" fill="#2F2FE6" />
+            <path d="M300 675L350 705V645L300 675ZM410 669.804H345V680.196H410V669.804Z" fill="#2F2FE6" />
+        </g>
+        <g id="InductionRoller">
+            <path class="belt" d="M835 625H985V725H835V625Z" fill="#008080" stroke="black" />
+            <path d="M901.439 686.042H961.37V660H901.439V686.042Z" fill="#2F2FE6" />
+            <path d="M858.63 673.071L910 703.142V643L858.63 673.071ZM961.37 667.862H904.863V678.279H961.37V667.862Z"
+                fill="#2F2FE6" />
+        </g>
+        <g id="RecirculationRamp">
+            <path d="M695 360H795V620H695V360Z" fill="#A0A0A4" stroke="black" />
+            <path d="M743.99 538.327L773.149 490H714.83L743.99 538.327ZM738.939 441.673V494.833H749.04V441.673H738.939Z"
+                fill="#2F2FE6" />
+            <path d="M757.121 498.054V441.673H731.869V498.054H757.121Z" fill="#2F2FE6" />
+        </g>
+        <g id="RecirculationConveyor">
+            <path class="belt" d="M130 360H690V460H130V360Z" fill="#008080" stroke="black" />
+            <path d="M544.167 396.49H480V422.471H544.167V396.49Z" fill="#2F2FE6" />
+            <path d="M590 410L540 380V440L590 410ZM480 415.196H545V404.804H480V415.196Z" fill="#2F2FE6" />
+            <path d="M264.167 396.49H200V422.471H264.167V396.49Z" fill="#2F2FE6" />
+            <path d="M310 410L260 380V440L310 410ZM200 415.196H265V404.804H200V415.196Z" fill="#2F2FE6" />
+        </g>
+        <g id="DistributionConveyor">
+            <path class="belt" d="M25 150H975V250H25V150Z" fill="#008080" stroke="black" />
+            <path d="M239.167 186.49H175V212.471H239.167V186.49Z" fill="#2F2FE6" />
+            <path d="M285 200L235 170V230L285 200ZM175 205.196H240V194.804H175V205.196Z" fill="#2F2FE6" />
+        </g>
+        <g id="VerticalSorterConveyor">
+            <path class="belt" d="M25 255H125V725H25V255Z" fill="#008080" stroke="black" />
+            <path d="M61.4899 360.834V425H87.4704V360.834H61.4899Z" fill="#2F2FE6" />
+            <path d="M74.9997 315L45 370H105L74.9997 315ZM80.1959 425V364.5H69.8036V425H80.1959Z" fill="#2F2FE6" />
+            <path d="M61.4899 590.834V655H87.4704V590.834H61.4899Z" fill="#2F2FE6" />
+            <path d="M74.9997 545L45 600H105L74.9997 545ZM80.1959 655V594.5H69.8036V655H80.1959Z" fill="#2F2FE6" />
+        </g>
+        <path d="M579 0H679V144H579V0Z" fill="#A0A0A4" stroke="black" />
+        <path d="M616 64.6754V119.221H641.253V64.6754H616Z" fill="#2F2FE6" />
+        <path d="M629.16 25.7143L600 72.4675H658.319L629.16 25.7143ZM634.21 119.221V67.7922H624.109V119.221H634.21Z"
+            fill="#2F2FE6" />
+        <path d="M785 0H885V144H785V0Z" fill="#A0A0A4" stroke="black" />
+        <path d="M822 64.6754V119.221H847.253V64.6754H822Z" fill="#2F2FE6" />
+        <path d="M835.16 25.7143L806 72.4675H864.319L835.16 25.7143ZM840.21 119.221V67.7922H830.109V119.221H840.21Z"
+            fill="#2F2FE6" />
+        <path d="M380 1H480V145H380V1Z" fill="#A0A0A4" stroke="black" />
+        <path d="M417 65.6754V120.221H442.253V65.6754H417Z" fill="#2F2FE6" />
+        <path d="M430.16 26.7143L401 73.4675H459.319L430.16 26.7143ZM435.21 120.221V68.7922H425.109V120.221H435.21Z"
+            fill="#2F2FE6" />
+        <g stroke="black" stroke-width="0.95">
+            <path id="DetectAfterScanner_PEC"
+                d="M269.989 600L259.855 620.07L250 600H269.989ZM250.011 750L260.145 729.93L270 750H250.011Z"
+                fill="#00FF00" />
+            <path id="DetectBeforeScanner_PEC"
+                d="M369.989 600L359.855 620.07L350 600H369.989ZM350.011 750L360.145 729.93L370 750H350.011Z"
+                fill="#00FF00" />
+            <path id="InductionRoller1_PEC"
+                d="M868.989 600L858.855 620.07L849 600H868.989ZM849.011 750L859.145 729.93L869 750H849.011Z"
+                fill="#00FF00" />
+            <path id="EndofReworkDetect"
+                d="M617.989 335L607.855 355.07L598 335H617.989ZM598.011 485L608.145 464.93L618 485H598.011Z"
+                fill="#00FF00" />
+            <path id="DistributionConv_PkgRecvdFromSorter"
+                d="M165.989 125L155.855 145.07L146 125H165.989ZM146.011 275L156.145 254.93L166 275H146.011Z"
+                fill="#00FF00" />
+            <path id="EndofSorterDetect_PEC"
+                d="M0 300.011L20.07 310.145L0 320V300.011ZM150 319.989L129.93 309.855L150 300V319.989Z"
+                fill="#00FF00" />
+            <path id="Sorter1_PkgDetect"
+                d="M355 120.011L375.07 130.145L355 140V120.011ZM505 139.989L484.93 129.855L505 120V139.989Z"
+                fill="#00FF00" />
+            <path id="Sorter2_PkgDetect"
+                d="M554.129 120.138L574.199 130.272L554.129 140.127V120.138ZM704.129 140.115L684.059 129.982L704.129 120.127V140.115Z"
+                fill="#00FF00" />
+            <path id="Sorter3_PkgDetect"
+                d="M760 120.011L780.07 130.145L760 140V120.011ZM910 139.989L889.93 129.855L910 120V139.989Z"
+                fill="#00FF00" />
+        </g>
+        <g id="Diverter1">
+            <path class="belt" d="M480 210H380V240H480V210Z" fill="#FF7A00" stroke="black" />
+            <path
+                d="M430.961 215.408C430.43 214.864 429.57 214.864 429.039 215.408L420.397 224.288C419.868 224.833 419.868 225.717 420.397 226.262C420.928 226.806 421.788 226.806 422.318 226.262L430 218.368L437.682 226.262C438.212 226.806 439.072 226.806 439.603 226.262C440.132 225.717 440.132 224.833 439.603 224.288L430.961 215.408ZM431.358 235V216.395H428.642V235H431.358Z"
+                fill="black" />
+        </g>
+        <g id="Diverter2">
+            <path class="belt" d="M680 210H580V240H680V210Z" fill="#FF7A00" stroke="black" />
+            <path d="M630.5 215L623 227H638L630.5 215ZM631.799 235V225.8H629.201V235H631.799Z" fill="black" />
+        </g>
+        <g id="Diverter3">
+            <path class="belt" d="M885 210H785V240H885V210Z" fill="#FF7A00" stroke="black" />
+            <path
+                d="M835 235C837.551 235 839.618 233.116 839.618 230.79C839.618 228.464 837.551 226.579 835 226.579C832.449 226.579 830.382 228.464 830.382 230.79C830.382 233.116 832.449 235 835 235ZM835 215L830 222.895H840L835 215ZM835.866 230.79V222.105H834.134V230.79H835.866Z"
+                fill="black" />
+        </g>
+    </g>
+    <defs>
+        <clipPath id="2Dmodelb">
+            <rect width="1000" height="750" fill="white" />
+        </clipPath>
+    </defs>
+</svg>

@@ -1,0 +1,298 @@
+{% extends 'base.html' %} {% block content %}
+
+<link rel="stylesheet" href="static/css/model.css" />
+
+<div class="model">
+  <p id="updated"></p>
+  <a class="fault-button" href="{% url 'view-faults' %}">Fault Menu</a>
+
+  <div class="model-title">
+    <label id="currentmachine">Skill Boss Logistics</label>
+  </div>
+
+  <div class="model-body">
+    {% include '2Dmodel.svg' %}
+    <div class="controls">
+      <div id="ReturnButton" class="hidden">
+        <button class="dark-blue" onclick="SwitchMenu('#Main_Menu')">
+          Main Menu
+        </button>
+      </div>
+      <div id="Main_Menu" class="active">
+        <button type="button" class="green" id="SystemStart" onclick="SendCMD('system_start')">
+          System Start
+        </button>
+        <button type="button" class="gray" id="LineSpeed" onclick="speedModal.showModal()" data-cmd="master_speed">
+          Line Speed
+        </button>
+        <button type="button" class="yellow" id="SystemPause" onclick="SendCMD('system_pause')">
+          System Pause
+        </button>
+        <button type="button" class="yellow" id="CycleStop" onclick="SendCMD('cycle_stop')">
+          Cycle Stop
+        </button>
+        <button type="button" class="red" id="SystemStop" onclick="SendCMD('system_stop')">
+          System Stop
+        </button>
+      </div>
+
+      <div id="Induction_Roller">
+        <button type="button" class="green" id="InductionRollerConveyorRun" onclick="SendCMD('induction_roller_on')">
+          Conveyor Run
+        </button>
+        <button type="button" class="red" id="InductionRollerConveyorStop" onclick="SendCMD('induction_roller_off')">
+          Conveyor Stop
+        </button>
+        <button type="button" class="gray" id="InductionRollerSpeedOffset" onclick="speedModal.showModal()"
+          data-cmd="induction_roller_speed">
+          Speed Offset
+        </button>
+        <button type="button" class="dark-green" id="InductionRollerConveyorJog"
+          onmousedown="SendCMD('induction_roller_jog')" onmouseup="SendCMD('induction_roller_off')">
+          Conveyor Jog
+        </button>
+      </div>
+
+      <div id="Induction_Conveyor">
+        <button type="button" class="green" id="InductionConveyorConveyorRun"
+          onclick="SendCMD('induction_conveyor_on')">
+          Conveyor Run
+        </button>
+        <button type="button" class="red" id="InductionConveyorConveyorStop"
+          onclick="SendCMD('induction_conveyor_off')">
+          Conveyor Stop
+        </button>
+        <button type="button" class="gray" id="InductionConveyorSpeedOffset" onclick="speedModal.showModal()"
+          data-cmd="induction_conveyor_speed">
+          Speed Offset
+        </button>
+        <button type="button" class="dark-green" id="InductionConveyorConveyorJog"
+          onmousedown="SendCMD('induction_conveyor_jog')" onmouseup="SendCMD('induction_conveyor_off')">
+          Conveyor Jog
+        </button>
+      </div>
+
+      <div id="Vertical_Sorter_Conveyor">
+        <button type="button" class="green" id="VerticalSorterConveyorRun" onclick="SendCMD('vertical_conveyor_on')">
+          Conveyor Run
+        </button>
+        <button type="button" class="red" id="VerticalSorterConveyorStop" onclick="SendCMD('vertical_conveyor_off')">
+          Conveyor Stop
+        </button>
+        <button type="button" class="dark-green" id="VerticalSorterConveyorJog"
+          onmousedown="SendCMD('vertical_conveyor_jog')" onmouseup="SendCMD('vertical_conveyor_off')">
+          Conveyor Jog
+        </button>
+        <button type="button" class="blue" id="VerticalSorterConveyorRaiseCylinder"
+          onclick="SendCMD('vertical_conveyor_raise')">
+          Raise Cyclinder
+        </button>
+        <button type="button" class="blue" id="VerticalSorterConveyorCylinderLowered"
+          onclick="SendCMD('vertical_conveyor_lower')">
+          Cylinder Lowered
+        </button>
+      </div>
+
+      <div id="Recirculation_Conveyor">
+        <button type="button" class="green" id="RecirculationConveyorRun" onclick="SendCMD('rework_conveyor_on')">
+          Conveyor Run
+        </button>
+        <button type="button" class="red" id="RecirculationConveyorStop" onclick="SendCMD('rework_conveyor_off')">
+          Conveyor Stop
+        </button>
+        <button type="button" class="dark-green" id="RecirculationConveyorJog"
+          onmousedown="SendCMD('rework_conveyor_jog')" onmouseup="SendCMD('rework_conveyor_off')">
+          Conveyor Jog
+        </button>
+      </div>
+
+      <div id="Distribution_Conveyor">
+        <button type="button" class="green" onclick="SendCMD('distribution_conveyor_on')">
+          Conveyor Run
+        </button>
+        <button type="button" class="red" onclick="SendCMD('distribution_conveyor_off')">
+          Conveyor Stop
+        </button>
+        <button type="button" class="gray" onclick="speedModal.showModal()" data-cmd="distribution_conveyor_speed">
+          Speed FPM
+        </button>
+        <button type="button" class="dark-green" onmousedown="SendCMD('distribution_conveyor_fjog')"
+          onmouseup="SendCMD('distribution_conveyor_off')">
+          Forward Jog
+        </button>
+        <button type="button" class="dark-green" onmousedown="SendCMD('distribution_conveyor_rjog')"
+          onmouseup="SendCMD('distribution_conveyor_off')">
+          Reverse Jog
+        </button>
+        <button type="button" class="lime wip">
+          Reset VFD
+        </button>
+      </div>
+
+      <div id="Diverter_1">
+        <button type="button" class="blue" onclick="SendCMD('diverter_1_on')">
+          Diverter Extend
+        </button>
+        <button type="button" class="blue" onclick="SendCMD('diverter_1_off')">
+          Diverter Retract
+        </button>
+      </div>
+
+      <div id="Diverter_2">
+        <button type="button" class="blue" onclick="SendCMD('diverter_2_on')">
+          Diverter Extend
+        </button>
+        <button type="button" class="blue" onclick="SendCMD('diverter_2_off')">
+          Diverter Retract
+        </button>
+      </div>
+
+      <div id="Diverter_3">
+        <button type="button" class="blue" onclick="SendCMD('diverter_3_raise')">
+          Raise
+        </button>
+        <button type="button" class="blue" onclick="SendCMD('diverter_3_lower')">
+          Lower
+        </button>
+
+        <button type="button" class="blue" onclick="SendCMD('diverter_3_extend')">
+          Extend
+        </button>
+        <button type="button" class="blue" onclick="SendCMD('diverter_3_retract')">
+          Retract
+        </button>
+        <button type="button" class="green" onclick="toggleVacuum(this)">
+          Vacuum On
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <dialog id="speedModal">
+    <form>
+      <label>
+        Change Speed Percentage (1-100)
+      </label>
+      <br />
+      <label>
+        <input type="number" inputmode="numeric" min="1" max="100" />
+      </label>
+
+      <div>
+        <button id="confirmBtn" value="default">Submit</button>
+        <button formmethod="dialog">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+</div>
+
+{% load static %}
+<script src="{% static 'js/model.js' %}">
+</script>
+
+<script>
+  // Set up last updated timer
+  let initial_connection = "{{ init_conn }}" === "True";
+  let last_updated = document.getElementById("updated");
+
+  if (initial_connection) {
+    let time = "Last updated: " + new Date().toLocaleString("en", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit"
+    });
+    last_updated.textContent = time;
+  } else {
+    last_updated.textContent = "PLC not connected";
+    last_updated.classList.toggle("warning", true)
+  }
+
+  // Add event listeners to SVG sections
+  const model = document.getElementById("2Dmodel");
+  model
+    .getElementById("InductionRoller")
+    .addEventListener("click", function () {
+      SwitchMenu("#Induction_Roller");
+      AddOutline(this);
+    });
+
+  model
+    .getElementById("InductionConveyor")
+    .addEventListener("click", function () {
+      SwitchMenu("#Induction_Conveyor");
+      AddOutline(this);
+    });
+
+  model
+    .getElementById("VerticalSorterConveyor")
+    .addEventListener("click", function () {
+      SwitchMenu("#Vertical_Sorter_Conveyor");
+      AddOutline(this);
+    });
+
+  model
+    .getElementById("RecirculationConveyor")
+    .addEventListener("click", function () {
+      SwitchMenu("#Recirculation_Conveyor");
+      AddOutline(this);
+    });
+
+  model
+    .getElementById("DistributionConveyor")
+    .addEventListener("click", function () {
+      SwitchMenu("#Distribution_Conveyor");
+      AddOutline(this);
+    });
+
+  model.getElementById("Diverter1").addEventListener("click", function () {
+    SwitchMenu("#Diverter_1");
+    document.getElementById("currentmachine").textContent = "Bow Arm Diverter"
+    AddOutline(this);
+  });
+
+  model.getElementById("Diverter2").addEventListener("click", function () {
+    SwitchMenu("#Diverter_2");
+    document.getElementById("currentmachine").textContent = "Pusher Diverter"
+    AddOutline(this);
+  });
+
+  model.getElementById("Diverter3").addEventListener("click", function () {
+    SwitchMenu("#Diverter_3");
+    document.getElementById("currentmachine").textContent = "Pick and Place Diverter"
+    AddOutline(this);
+  });
+
+  // Update page on interval
+  $(document).ready(() =>
+    setInterval(() => {
+      $.ajax({ method: "GET", url: "/raw/skill-boss-logistics" }).done(
+        (data) => {
+
+          if (!data.connection) {
+            last_updated.classList.toggle("warning", true)
+            last_updated.textContent = "Connection lost"
+            return
+          }
+          else {
+            last_updated.classList.toggle("warning", false)
+          }
+
+          last_updated.textContent = "Last updated: "
+            + new Date().toLocaleString("en", {
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit"
+            });;
+
+          let tags = Object.values(data.tags)
+          if (tags) {
+            recolorSensors(tags);
+          }
+        }
+      );
+    }, 250)
+  );
+</script>
+
+{% endblock %}

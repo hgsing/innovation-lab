@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<script>
+    $(document).ready(function () {
+
+        function set_logging(state) {
+            $.ajax({
+                type: "POST",
+                url: "{% url 'set-logging' %}",
+                data: {
+                    "logging": state
+                },
+                complete: (data) => {
+                    if (data['responseJSON']['logging'])
+                        $('#logging-state').text("Logging On")
+                    else
+                        $('#logging-state').text("Logging Off")
+                },
+                "dataType": "json"
+            });
+        }
+
+        $('#turn-logging-on').click(e => {
+            set_logging(true)
+        });
+        $('#turn-logging-off').click(e => {
+            set_logging(false)
+        });
+
+        $("#reconnect-devices").click(e => {
+            $.ajax({ type: "POST", url: "{% url 'reconnect-devices' %}" });
+        })
+
+    })
+</script>
+
+<div class="control-panel">
+    <div class="control-section">
+        <h2>  </h2>
+        <div class="one-column-layout">
+            <div id="reconnect-devices" class="toggle-button reconnect">
+                <span>Reconnect Devices</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="control-section">
+        <h2 id="logging-state"> Set Logging </h2>
+        <div class="two-column-layout">
+            <div id="turn-logging-on" class="toggle-button toggle-on">
+                <span>Turn Logging On</span>
+            </div>
+            <div id="turn-logging-off" class="toggle-button toggle-off">
+                <span>Turn Logging Off</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<style>
+    .control-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+        margin: 3rem;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+        height: 50%;
+    }
+
+    .control-section {
+        display: flex;
+        background-color: #efefef;
+        color: #111;
+        width: 80%;
+        height: 30%;
+        text-align: center;
+        padding: 50px 25px;
+        border-radius: 20px;
+        gap: 1rem;
+        align-items: flex-start;
+        justify-content: space-around;
+        flex-direction: column;
+    }
+
+    .one-column-layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    .two-column-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        justify-items: center;
+        width: 100%;
+    }
+
+    .toggle-button {
+        height: 100px;
+        width: 75%;
+        max-width: 250px;
+        border-radius: 10px;
+        margin: 0 20px;
+
+        display: grid;
+        place-content: center;
+
+        color: white;
+        background-color: #555;
+        font-weight: bolder;
+
+        cursor: pointer;
+    }
+
+    .toggle-on {
+        background-color: green;
+    }
+
+    .toggle-off {
+        background-color: red;
+    }
+
+    .reconnect {
+        max-width: none;
+        background-color: #69cfcf;
+    }
+</style>
+
+{% endblock %}

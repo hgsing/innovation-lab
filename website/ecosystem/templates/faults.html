@@ -1,0 +1,423 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+    <a class="nav button" href="{% url 'manual-control' %}">Manual Control</a>
+</div>
+<div>
+    <div class="save nav button" onclick="SaveItems()">Save Faults</div>
+    <div id="toast">Saved!</div>
+</div>
+
+<div class="wrapper">
+    <div class="list-container">
+        <ul class="fault-list">
+            <li>Induction Jam</li>
+            <li>Distribution Jam</li>
+        </ul>
+    </div>
+
+    <form id="fault-form" action="">
+        <fieldset class="form-group">
+            <legend>Create new button</legend>
+            <div class="stacked">
+                <label for="label">Label</label>
+                <input type="text" maxlength="60" id="label" placeholder='"Fault name"' autocomplete="off">
+            </div>
+            <div class="stacked">
+                <label for="tags">Tags</label>
+                <input class="form__group" type="text" maxlength="60" id="tags" placeholder="e.g. SystemStop 1"
+                    autocomplete="off">
+            </div>
+            <div class="stacked">
+                <label for="colors">Color</label>
+                <div class="color-buttons">
+                    <input type="button" class="white" onclick="setColor(this)"></input>
+                    <input type="button" class="black" onclick="setColor(this)"></input>
+                    <input type="button" class="green" onclick="setColor(this)"></input>
+                    <input type="button" class="red" onclick="setColor(this)"></input>
+                    <input type="button" class="yellow" onclick="setColor(this)"></input>
+                    <input type="button" class="blue" onclick="setColor(this)"></input>
+                </div>
+            </div>
+            <div>
+                <label for="checkbox"> Add ON/OFF ? </label>
+                <input type="checkbox" class="stacked" id="checkbox" autocomplete="off" />
+            </div>
+            <button role="button" class="button">Add to list</button>
+        </fieldset>
+    </form>
+</div>
+
+<script>
+    var itemList = Object.values(JSON.parse('{{ faults | safe }}'));
+
+    const faultList = document.querySelector(".fault-list")
+    faultList.innerHTML = ""
+    $("input.white").click()
+
+    itemList.forEach((item, index) => {
+        item.key = index
+        renderItem(item)
+    })
+
+    function addItem(inputItem) {
+        const item = {
+            ...inputItem,
+            key: itemList.length
+        }
+        itemList.push(item)
+        renderItem(item)
+    }
+
+    function deleteItem(key) {
+        const index = itemList.findIndex(item => item.key === Number(key));
+        const item = {
+            deleted: true,
+            ...itemList[index]
+        };
+        itemList = itemList.filter(item => item.key !== Number(key))
+        renderItem(item);
+    }
+
+    function renderItem(item) {
+        if (item.deleted) {
+            document.querySelector(`[data-key='${item.key}']`).remove();
+        }
+        else {
+            const node = document.createElement("li")
+            node.setAttribute("class", "list-item")
+            node.setAttribute("data-key", item.key)
+
+            node.innerHTML = `
+                <span class="list-button ${item.color}">${item.label}</span>
+                <p>${item.cmd}</p>
+                <button class="delete-item">${"\u00D7"}</button>
+            `
+            faultList.append(node)
+        }
+
+    }
+
+    const form = document.getElementById("fault-form")
+    form.addEventListener('submit', event => {
+        event.preventDefault()
+
+        const [input, tags] = form.getElementsByTagName('input');
+        const label = input.value.trim();
+        const checkbox = document.getElementById("checkbox")
+
+        if (label !== '') {
+            const newItem = {
+                label: label,
+                cmd: tags.value.trim(),
+                color: newColor,
+            }
+            input.value = '';
+            tags.value = '';
+            addItem(newItem)
+
+            if (checkbox.checked) {
+                newItem.label += " OFF"
+                newItem.cmd = newItem.cmd.replaceAll("0", "~")
+                newItem.cmd = newItem.cmd.replaceAll("1", "0")
+                newItem.cmd = newItem.cmd.replaceAll("~", "1")
+                switch (newItem.color) {
+                    case "white":
+                        newItem.color = "black"
+                        break;
+                    case "black":
+                        newItem.color = "white"
+                        break;
+                    case "green":
+                        newItem.color = "red"
+                        break;
+                    case "red":
+                        newItem.color = "green"
+                        break;
+                    case "yellow":
+                        newItem.color = "blue"
+                        break;
+                    case "blue":
+                        newItem.color = "yellow"
+                        break;
+                    default:
+                        newItem.color = "white"
+                        break;
+                }
+                addItem(newItem)
+            }
+        }
+    });
+
+    faultList.addEventListener('click', event => {
+        if (event.target.classList.contains('list-button')) {
+            const key = event.target.parentElement.dataset.key;
+            const item = itemList[key]
+            console.log("sent fault", item.cmd)
+            const buttonClasses = event.target.classList
+            buttonClasses.add("clicked")
+            setTimeout(() => { buttonClasses.remove("clicked") }, 2000);
+            SendFault(itemList[key].cmd)
+        }
+        if (event.target.classList.contains('delete-item')) {
+            const key = event.target.parentElement.dataset.key;
+            deleteItem(key);
+        }
+    });
+
+    function SendFault(command) {
+        $.ajax({
+            type: "POST",
+            url: "/command/" + command,
+        });
+    }
+
+    function setColor(el) {
+        newColor = el.classList[0]
+
+        for (let btn of document.getElementsByClassName("selected")) {
+            btn.classList.remove("selected")
+        }
+
+        el.classList.add("selected")
+    }
+
+    function SaveItems() {
+        const toast = document.getElementById("toast")
+        toast.className = "show"
+        setTimeout(function () { toast.className = ""; }, 2500);
+
+        $.ajax({
+            type: "POST",
+            url: "/save_faults",
+            data: JSON.stringify(itemList)
+        });
+    }
+
+</script>
+
+<style>
+    .list-container {
+        width: 60%;
+        min-width: 50rem;
+        height: 100%;
+        margin: 2rem;
+
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        align-content: center;
+    }
+
+    .fault-list {
+        display: flex;
+        flex-direction: column;
+
+        list-style: none;
+        transition: all 1s;
+    }
+
+    .list-item {
+        display: flex;
+        flex-direction: row;
+        place-content: space-between;
+        align-items: center;
+        padding: 1rem;
+    }
+
+    .list-button {
+        width: 300px;
+        height: 100px;
+
+        display: grid;
+        place-content: center;
+        cursor: pointer;
+        font-weight: bold;
+        overflow: hidden;
+
+        font-size: 24px;
+        line-height: 1.15;
+
+        border-radius: 0.4rem;
+        outline: 1px solid #444;
+
+        background-color: var(--primary-color);
+        color: var(--accent-color, black);
+    }
+
+    .list-button:hover {
+        outline: 2px solid var(--primary-color);
+    }
+
+    .list-button.clicked {
+        box-shadow: inset 0 0 0 10px black;
+    }
+
+    .delete-item {
+        font-size: 40px;
+        background: none;
+        box-shadow: none;
+        border: none;
+        cursor: pointer;
+
+        height: 3rem;
+        width: 3rem;
+        place-content: center;
+    }
+
+    .button {
+        padding: 0.5rem;
+        cursor: pointer;
+        border-radius: 0.25rem;
+
+        color: #333;
+        background: lightgrey;
+        outline: 2px solid grey;
+    }
+
+    .nav {
+        position: absolute;
+        left: 0;
+        margin: 1rem;
+    }
+
+    .save {
+        position: absolute;
+        align-self: self-end;
+        left: auto;
+        right: 0;
+    }
+
+    #toast {
+        position: absolute;
+        min-width: 25px;
+        left: auto;
+        right: 0;
+        margin: 4rem 2rem;
+        text-align: center;
+
+        display: none;
+        background-color: #333;
+        color: #fff;
+
+        border-radius: 5px;
+        padding: 1rem;
+        z-index: 1;
+    }
+
+    #toast.show {
+        display: block;
+        animation: ease-in 0.5s, ease-out 0.5s 2.5s;
+    }
+
+    .button:hover {
+        box-shadow: 0 10px 15px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .wrapper {
+        margin: 2rem;
+        width: 60%;
+        align-items: center;
+        justify-self: start;
+        --color-accent: hsl(200, 100%, 50%);
+    }
+
+    label {
+        margin-bottom: 2ch;
+        font-size: large;
+    }
+
+    .form-group {
+        display: grid;
+        font-size: larger;
+        border: 2px solid var(--primary-color);
+        gap: 1rem;
+        padding: 2ch;
+        margin: 0 0 0 1ch;
+    }
+
+    legend {
+        font-weight: 700;
+        color: var(--primary-color);
+        margin: 0 1ch;
+        outline: 2px solid var(--primary-color);
+        padding: 1ch 2ch;
+    }
+
+    .color-buttons {
+        display: grid;
+        padding: 1rem 1ch;
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+
+    .color-buttons>input {
+        width: 3rem;
+        height: 2rem;
+        background-color: var(--primary-color);
+        border: 0;
+        outline: 1px solid black;
+    }
+
+    .color-buttons>input.selected {
+        width: 4rem;
+        height: 3rem;
+        outline: 2px solid black;
+        transform: translate(-10%, -10%)
+    }
+
+    .white {
+        --primary-color: white;
+    }
+
+    .black {
+        --primary-color: #333;
+        --accent-color: #eee;
+    }
+
+    .green {
+        --primary-color: green;
+    }
+
+    .yellow {
+        --primary-color: yellow;
+    }
+
+    .red {
+        --primary-color: red;
+    }
+
+    .blue {
+        --primary-color: #1453ff;
+        --accent-color: white;
+    }
+
+    input[type="text"] {
+        border: 0;
+        outline: 2px solid var(--primary-color);
+        border-radius: 0.4em;
+        padding: 0.75em;
+        width: 100%;
+        max-width: 100ch;
+        font-size: large;
+    }
+
+    input[type="checkbox"] {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    input:focus::placeholder {
+        color: transparent;
+    }
+
+    button[role="button"] {
+        font-size: inherit;
+        place-self: center;
+        background-color: transparent;
+        width: max-content;
+        height: min-content;
+        padding: 1ch 5ch;
+    }
+</style>
+
+{% endblock %}

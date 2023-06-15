@@ -1,0 +1,14 @@
+[[faults]]
+label = "Induction Jam"
+cmd = "Jam_Induction 1"
+color = "white"
+
+[[faults]]
+label = "Distribution Jam"
+cmd = "Jam_Distribution 1"
+color = "white"
+
+[[faults]]
+label = "Disable Jams"
+cmd = "Jam_Distribution 0 Jam_Induction 0"
+color = "black"
