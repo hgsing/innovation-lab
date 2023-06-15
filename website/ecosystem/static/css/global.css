@@ -75,7 +75,17 @@ button {
   place-content: center;
   cursor: pointer;
 
+  border: 0;
+  outline: 1px solid var(--line-color);
+}
+
+.button {
+  padding: 0.5rem;
+  cursor: pointer;
   border-radius: 0.25rem;
+
+  color: #333;
+  background: white;
   outline: 1px solid var(--line-color);
 }
 

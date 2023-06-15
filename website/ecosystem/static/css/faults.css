@@ -58,22 +58,12 @@
   font-size: 40px;
   background: none;
   box-shadow: none;
-  border: none;
+  outline: transparent;
   cursor: pointer;
 
   height: 3rem;
   width: 3rem;
   place-content: center;
-}
-
-.button {
-  padding: 0.5rem;
-  cursor: pointer;
-  border-radius: 0.25rem;
-
-  color: #333;
-  background: lightgrey;
-  outline: 2px solid grey;
 }
 
 .nav {
@@ -96,10 +86,13 @@
   right: 0;
   margin: 4rem 2rem;
   text-align: center;
+  --primary-color: white;
+  --bg-color: black;
 
   display: none;
-  background-color: #333;
-  color: #fff;
+  background-color: var(--primary-color);
+  color: var(--bg-color);
+  outline: 1px solid #111;
 
   border-radius: 5px;
   padding: 1rem;
