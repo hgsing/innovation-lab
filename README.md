@@ -2,18 +2,24 @@
 
 Project contains a website written using Django, JQuery, and vanilla JavaScript/HTML/CSS to display data from and communicate with various devices in the Innovation Research Lab.
 
-# Structure
+# Folder Structure
 ```bash
-├───docs
+├───docs 		# Project wide documentation, also holds related documentation for FaultPro and FactoryTalk Studio
 │   └───images
-├───PLC
-└───website
-    ├───ecosystem
+├───PLC 		# Python files used to communicate with the Skill Boss Logistics device
+└───website 		# All files related to the Django website
+    ├───ecosystem 	# Main 'application' of the website
     │   ├───static
     │   │   ├───css
     │   │   ├───img
     │   │   └───js
-    │   └───templates
-    └───labproject
+    │   └───templates 	# Contains HTML and SVG files used in the website
+	└───labproject 	# Django project settings
 ```
-PLC -> Python files used to communicate with the 95-MSB3 Skill Boss Logistics machine.
+
+# Contributors
+Daniel Delannes-molka	<ddelanne@gmu.edu>
+
+Hayden Singleton	<hsinglet@gmu.edu>
+
+Previous work - Aaron Rahman, Brian Nguyen
