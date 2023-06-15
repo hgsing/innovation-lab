@@ -151,12 +151,6 @@ header {
   object-fit: cover;
 }
 
-#light-dark-toggle {
-  cursor: pointer;
-  width: 3rem;
-  height: 3rem;
-}
-
 footer {
   border-top: 2px solid var(--line-color);
   width: 100%;
@@ -178,4 +172,81 @@ footer {
 .home-icon {
   width: 16px;
   height: 16px;
+}
+
+.control-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  margin: 3rem;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 50%;
+}
+
+.control-section {
+  display: flex;
+  background-color: #efefef;
+  color: #111;
+  width: 80%;
+  height: 30%;
+  text-align: center;
+  padding: 50px 25px;
+  border-radius: 20px;
+  gap: 1rem;
+  align-items: flex-start;
+  justify-content: space-around;
+  flex-direction: column;
+}
+
+.one-column-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.two-column-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+  width: 100%;
+}
+
+.toggle-button {
+  height: 100px;
+  width: 75%;
+  max-width: 250px;
+  border-radius: 10px;
+  margin: 0 20px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+  font-weight: bolder;
+
+  cursor: pointer;
+}
+
+.toggle-on {
+  background-color: green;
+}
+
+.toggle-off {
+  background-color: red;
+}
+
+.reconnect {
+  max-width: none;
+  background-color: #69cfcf;
+}
+
+#light-dark-toggle {
+  max-width: none;
+  background-color: #444;
 }

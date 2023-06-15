@@ -1,41 +1,49 @@
-@media (max-width: 767px) {
-  .header {
-    padding-left: 32px;
-    padding-right: 32px;
-  }
+#home-grid {
+  margin: 2rem;
+  width: 70%;
 
-  .footer {
-    padding-left: 32px;
-    padding-right: 32px;
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, max-content));
+  justify-content: center;
+  gap: 2rem 1rem;
 
-  .copyright-notice {
-    text-align: center;
-    margin-left: 16px;
-    margin-right: 16px;
-  }
+  font-family: "Roboto", sans-serif;
+
+  --device-text: #778ca0;
+  --device-color: #b2cadb;
+  --device-selected: #a0c0d0;
+
+  color: var(--device-text);
 }
 
-@media (max-width: 479px) {
-  .home-mobile-menu {
-    display: block;
-  }
+.home-grid-entry {
+  height: 200px;
+  width: 200px;
+  background-color: var(--device-color);
+  border-radius: 10px;
+  outline: 2px solid var(--device-selected);
 
-  .header {
-    padding: 16px;
-  }
-
-  .footer {
-    padding: 16px;
-    flex-direction: column;
-  }
-
-  .copyright-notice {
-    margin-left: 0;
-    margin-right: 0;
-    margin-bottom: 16px;
-  }
+  display: grid;
+  text-align: center;
+  grid-template-rows: 75% 25%;
+  align-items: center;
 }
+
+.home-grid-entry:hover {
+  background-color: var(--device-selected);
+}
+
+.machine-name {
+  font-size: 24px;
+  letter-spacing: 150%;
+  line-height: 100%;
+}
+
+.clickable {
+  color: white;
+  cursor: pointer;
+}
+
 
 @media (max-width: 770px) {
   #home-grid {

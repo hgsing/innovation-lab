@@ -10,45 +10,31 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter" data-tag="font" /> -->
-    <link rel="stylesheet" href="{% url 'index' %}static/css/style.css?{% now ' U' %}" />
-    <link href="{% url 'index' %}static/css/home.css?{% now ' U' %}" rel="stylesheet" />
-
-    <link rel="icon" type="image/x-icon" href="{% url 'index' %}static/img/favicon.ico">
+    <link rel="stylesheet" href="{% url 'index' %}static/css/global.css?{% now ' U' %}" />
+    <link rel="icon" type="image/x-icon" href="{% url 'index' %}static/img/favicon.ico?{% now ' U' %}">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 
 <body>
-    <header data-role="header">
+    <header>
         <img alt="Mason logo" src="{% url 'index' %}static/img/mason.png" class="home-image" />
         <nav class="home-nav">
             <a class="nav-link" href="{% url 'index' %}">Home</a>
             <a class="nav-link" href="{% url 'control-panel' %}">Control Panel</a>
             <a class="nav-link" href="{% url 'manual-control' %}">Manual Control</a>
         </nav>
-        <div id="light-dark-toggle" onclick="toggleTheme()">
-            <svg viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink">
-                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                    <g fill="var(--primary-color)" fill-rule="nonzero">
-                        <path
-                            d="M12,22 C17.5228475,22 22,17.5228475 22,12 C22,6.4771525 17.5228475,2 12,2 C6.4771525,2 2,6.4771525 2,12 C2,17.5228475 6.4771525,22 12,22 Z M12,20.5 L12,3.5 C16.6944204,3.5 20.5,7.30557963 20.5,12 C20.5,16.6944204 16.6944204,20.5 12,20.5 Z">
-                        </path>
-                    </g>
-                </g>
-            </svg>
-        </div>
+        <div><!-- left empty to center nav bar --></div>
     </header>
     <div class="main-body-layout">
         {% block content %}
         {% endblock %}
     </div>
-    <footer data-role="footer">
+    <footer>
         <img alt="logo" src="{% url 'index' %}static/img/mason.png" class="home-image" />
-        <!-- <span class="copyright-notice">
-            © 2022 Aaron Rahman, All Rights Reserved.
-        </span> -->
+        <span class="copyright-notice">
+            © 2023 All Rights Reserved.
+        </span>
         <div class="home-icon-group">
             <a href="https://twitter.com/georgemasonu" target="_blank" rel="noreferrer noopener">
                 <svg viewbox="0 0 950.8571428571428 1024" class="home-icon">
@@ -85,6 +71,7 @@
 </html>
 
 <script>
+    //// Auto sets dark theme based on user settings
     // if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
     //     // enable dark mode
     //     localStorage.setItem("dark-mode")
@@ -101,11 +88,6 @@
         else
             localStorage.removeItem("dark-mode")
     }
-
-    const themeToggle = document.getElementById("light-dark-toggle")
-    themeToggle.addEventListener('hover', () => {
-        console.log(this)
-    })
 
     $(document).ready(() => {
         const page = window.location.pathname

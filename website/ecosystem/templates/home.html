@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<link href="{% url 'index' %}static/css/home.css?{% now ' U' %}" rel="stylesheet" />
+
 <div class="home-title-background">
     <span class="home-title">
         <span class="home-text">Machine Status</span>
@@ -24,53 +26,4 @@
     {% endif %}
     {% endfor %}
 </div>
-
-<style>
-    #home-grid {
-        margin: 2rem;
-        width: 70%;
-        
-        display: grid;
-        grid-template-columns:
-            repeat(auto-fill, minmax(250px, max-content));
-        justify-content: center;
-        gap: 2rem 1rem;
-
-        font-family: 'Roboto', sans-serif;
-
-        --device-text: #778ca0;
-        --device-color: #b2cadb;
-        --device-selected: #a0c0d0;
-
-        color: var(--device-text);
-    }
-
-    .home-grid-entry {
-        height: 200px;
-        width: 200px;
-        background-color: var(--device-color);
-        border-radius: 10px;
-        outline: 2px solid var(--device-selected);
-
-        display: grid;
-        text-align: center;
-        grid-template-rows: 75% 25%;
-        align-items: center;
-    }
-
-    .home-grid-entry:hover {
-        background-color: var(--device-selected);
-    }
-
-    .machine-name {
-        font-size: 24px;
-        letter-spacing: 150%;
-        line-height: 100%;
-    }
-
-    .clickable {
-        color: white;
-        cursor: pointer;
-    }
-</style>
 {% endblock %}

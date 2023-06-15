@@ -4,6 +4,8 @@
 
 {% block content %}
 
+<link rel="stylesheet" href="{% url 'index' %}static/css/devices.css?{% now ' U' %}" />
+
 <div class="home-title-background">
     <span class="home-title">
         <span class="home-text">{{ device.name }}</span>
@@ -18,10 +20,6 @@
 {% if device.name == 'Skill Boss Logistics' %}
 
 <table id="machine-status-table">
-    <colgroup>
-        <col class="row-name">
-        <col class="row-content" span="5">
-    </colgroup>
     <thead>
         <tr>
             <th>Key</th>
@@ -102,7 +100,7 @@
                             previousValue.innerHTML = oldValue
                             valueCell.innerHTML = newValue
 
-                            row.style.backgroundColor = "#bbddee";
+                            // row.style.backgroundColor = "#bbddee";
 
                             const duration_ms = 1000 * 5;
                             const effect = new KeyframeEffect(
@@ -162,97 +160,5 @@
     }
 
 </script>
-
-<style>
-    .table-info {
-        display: flex;
-        justify-content: center;
-        align-content: center;
-        width: calc(100% - 2rem);
-        margin-top: 1rem;
-    }
-
-    #search-bar {
-        color: #222;
-        font-size: 1rem;
-        border: 0;
-        height: 100%;
-        width: 50%;
-        border-radius: 0.5rem;
-        padding: 1rem 0.5rem;
-        appearance: none;
-    }
-
-    #search-bar:focus {
-        border: 0;
-        outline: 2px solid black;
-    }
-
-    table {
-        text-align: center;
-        width: calc(100% - 2rem);
-        border-collapse: separate;
-        margin: 1rem 0rem;
-        border-spacing: 0 5px;
-        overflow: scroll;
-        color: #111;
-        --table-hover: #cce1f9;
-        --table-bg: #ddebfb;
-        --table-border: ;
-        --table-head: #c5c8ea;
-    }
-
-    td {
-        padding: 8px;
-        text-align: center;
-    }
-
-    tr:hover {
-        background-color: var(--table-hover);
-    }
-
-    tr {
-        background-color: var(--table-bg);
-        overflow: hidden;
-        border-collapse: separate;
-    }
-
-    th {
-        padding-top: 12px;
-        padding-bottom: 12px;
-        background-color: var(--table-head);
-        font-weight: normal;
-    }
-
-    .embed-table {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        margin-bottom: 30px;
-    }
-
-    tr td:first-child,
-    tr th:first-child {
-        border-top-left-radius: 5px;
-        border-bottom-left-radius: 5px;
-        -webkit-border-top-left-radius: 5px;
-        -webkit-border-bottom-left-radius: 5px;
-    }
-
-    tr td:last-child,
-    tr th:last-child {
-        border-top-right-radius: 5px;
-        border-bottom-right-radius: 5px;
-        -webkit-border-top-right-radius: 5px;
-        -webkit-border-bottom-right-radius: 5px;
-    }
-
-    #updated {
-        position: absolute;
-        right: 2rem;
-        margin-top: 1rem;
-        padding: 0;
-    }
-</style>
 
 {% endblock %}
