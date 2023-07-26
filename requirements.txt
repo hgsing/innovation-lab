@@ -1,4 +1,4 @@
-Django==4.2.1
+Django==4.2.3
 pycomm3==1.2
 tomli>=1.1 ; python_version < "3.11"
 tomlkit==0.11
